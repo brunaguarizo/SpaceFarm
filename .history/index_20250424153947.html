@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0" />
+        <title>Space Adventure</title>
+        <link
+            rel="stylesheet"
+            href="styles.css" />
+
+        <link
+            rel="preconnect"
+            href="https://fonts.googleapis.com" />
+        <link
+            rel="preconnect"
+            href="https://fonts.gstatic.com"
+            crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Ranchers&display=swap"
+            rel="stylesheet" />
+    </head>
+    <body>
+        <div id="game-container">
+            <!-- Character Selection Screen -->
+            <div id="character-select">
+                <h1> SPACE ANIMALS</h1>
+                <div class="text"> CHOOSE A CHARACTER TO START<div/>
+                <div class="character-options">
+                    <div
+                        class="character-option"
+                        data-character="astronaut">
+                        <div class="character-img">
+                            <img
+                                src="img/dog.png"
+                                alt="Space Dog" />
+                        </div>
+                        <div class="character-label">SPACE DOG</div>
+                    </div>
+                    <div
+                        class="character-option"
+                        data-character="alien">
+                        <div class="character-img">
+                            <img
+                                src="img/pig.png"
+                                alt="Space Pig" />
+                        </div>
+                        <div class="character-label">SPACE PIG</div>
+                    </div>
+                    <div
+                        class="character-option"
+                        data-character="robot">
+                        <div class="character-img">
+                            <img
+                                src="img/cat.png"
+                                alt="Space Cat" />
+                        </div>
+                        <div class="character-label">SPACE CAT</div>
+                    </div>
+                </div>
+                <button
+                    id="confirm-btn"
+                    disabled>
+                    Start Mission
+                </button>
+            </div>
+
+            <!-- Game Screen -->
+            <div id="game-screen">
+                <div id="player"></div>
+                <div id="score-container">
+                    <div id="score">Score: 0</div>
+                    <button id="pause-btn">Pause</button>
+                </div>
+            </div>
+
+            <!-- Pause Screen -->
+            <div id="pause-screen">
+                <h2>Game Paused</h2>
+                <button id="resume-btn">Resume</button>
+            </div>
+
+            <!-- Game Over Screen -->
+            <div id="game-over">
+                <h2>Game Over</h2>
+                <div id="final-score">Score: 0</div>
+                <button id="restart-btn">Play Again</button>
+            </div>
+        </div>
+
+        <script src="script.js"></script>
+    </body>
+</html>

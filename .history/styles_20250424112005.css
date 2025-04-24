@@ -1,0 +1,269 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-family: var(--font-family);
+    background-color: var(--mid-green);
+}
+
+#game-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background-image: url("img/space-bg.jpg");
+    background-size: cover;
+    overflow: hidden;
+}
+
+/* Character Selection Screen */
+#character-select {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+#character-select h1 {
+    color: var(--light-green);
+    font-size: var(--header);
+    margin-bottom: var(--space-extra-large);
+    text-shadow: 0 0 10px var(--mid-purple);
+}
+
+.character-options {
+    display: flex;
+    gap: var(--space-extra-large);
+    margin-bottom: var(--space-extra-large);
+}
+
+.character-option {
+    width: 150px;
+    height: 150px;
+    background-color: var(--dark-purple);
+    border-radius: var(--space-small);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    padding: var(--space-small);
+    border: 2px solid transparent;
+}
+
+.character-option:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px var(--light-purple);
+}
+
+.character-option.selected {
+    border-color: var(--light-green);
+    box-shadow: 0 0 20px var(--space-small);
+}
+
+.character-icon {
+    width: 100px;
+    height: 100px;
+    font-size: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.character-label {
+    color: white;
+    font-size: 1.2rem;
+    margin-top: 10px;
+}
+
+#confirm-btn {
+    padding: 12px 30px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#confirm-btn:hover {
+    background-color: #45a049;
+}
+
+#confirm-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+/* Game Screen */
+#game-screen {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+#player {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    left: 100px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 50px;
+    line-height: 1;
+    z-index: 5;
+}
+
+.asteroid {
+    position: absolute;
+    font-size: 30px;
+    color: #aaa;
+}
+
+#score-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    z-index: 5;
+}
+
+#score {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px 20px;
+    border-radius: 10px;
+}
+
+#pause-btn {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#pause-btn:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* Game Over Screen */
+#game-over {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 15;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#game-over h2 {
+    color: #ff3333;
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+}
+
+#final-score {
+    color: white;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+#restart-btn {
+    padding: 12px 30px;
+    background-color: #3366ff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#restart-btn:hover {
+    background-color: #2952cc;
+}
+
+/* Utility Classes */
+.invisible {
+    opacity: 0;
+}
+
+/* Pause Screen */
+#pause-screen {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 12;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+#pause-screen h2 {
+    font-size: 3rem;
+    margin-bottom: 2rem;
+}
+
+#resume-btn {
+    padding: 12px 30px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#resume-btn:hover {
+    background-color: #45a049;
+}
+
+/* --------------------------- variables  --------------------------- */
+:root {
+    --font-family: "Ranchers", sans-serif;
+    --header: 80px;
+    --text: 16px;
+
+    --light-green: #bfff41;
+    --mid-green: #a3de1a;
+    --dark-green: #46b800;
+    --light-pink: #ffc2ec;
+    --mid-pink: #f0429c;
+    --dark-pink: #910b64;
+    --light-purple: #dcccff;
+    --mid-purple: #8655ef;
+    --dark-purple: #4913bf;
+
+    --space-extra-small: 4px;
+    --space-small: 8px;
+    --space-regular: 16px;
+    --space-medium: 32px;
+    --space-large: 48px;
+    --space-extra-large: 80px;
+}
