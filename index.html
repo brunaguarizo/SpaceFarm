@@ -5,63 +5,91 @@
         <meta
             name="viewport"
             content="width=device-width, initial-scale=1.0" />
-        <title>Space Farm Game</title>
+        <title>Space Adventure</title>
         <link
             rel="stylesheet"
             href="styles.css" />
+
+        <link
+            rel="preconnect"
+            href="https://fonts.googleapis.com" />
+        <link
+            rel="preconnect"
+            href="https://fonts.gstatic.com"
+            crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Ranchers&display=swap"
+            rel="stylesheet" />
     </head>
     <body>
         <div id="game-container">
-            <!-- Character Selection Screen -->
+            <div class="scrolling-background"></div>
+            <!-- ----------------------- CHARACTER SELESCTION SCREEN ----------------------- -->
             <div id="character-select">
-                <h1>Choose Your Space Farmer</h1>
+                <h1>SPACE ANIMALS</h1>
+                <div class="text">CHOOSE A CHARACTER TO START</div>
                 <div class="character-options">
                     <div
                         class="character-option"
-                        data-character="pig">
-                        <div class="character-icon">🐷</div>
-                        <div class="character-label">Space Pig</div>
+                        data-character="astronaut">
+                        <div class="character-img">
+                            <img
+                                src="img/dog.png"
+                                alt="Space Dog" />
+                        </div>
+                        <div class="character-label">SPACE DOG</div>
                     </div>
                     <div
                         class="character-option"
-                        data-character="dog">
-                        <div class="character-icon">🐶</div>
-                        <div class="character-label">Space Dog</div>
+                        data-character="alien">
+                        <div class="character-img">
+                            <img
+                                src="img/pig.png"
+                                alt="Space Pig" />
+                        </div>
+                        <div class="character-label">SPACE PIG</div>
                     </div>
                     <div
                         class="character-option"
-                        data-character="cat">
-                        <div class="character-icon">🐱</div>
-                        <div class="character-label">Space Cat</div>
+                        data-character="robot">
+                        <div class="character-img">
+                            <img
+                                src="img/cat.png"
+                                alt="Space Cat" />
+                        </div>
+                        <div class="character-label">SPACE CAT</div>
                     </div>
                 </div>
                 <button
                     id="confirm-btn"
                     disabled>
-                    Confirm Choice
+                    START MISSION
                 </button>
             </div>
 
-            <!-- Game Screen -->
+            <!-- ----------------------- GAME SCREEN ----------------------- -->
+
             <div id="game-screen">
                 <div id="player"></div>
                 <div id="score-container">
-                    <div id="score">Score: 0</div>
-                    <button id="pause-btn">Pause</button>
+                    <div id="score">SCORE: 0</div>
+                    <button id="pause-btn">PAUSE</button>
                 </div>
             </div>
 
-            <!-- Pause Screen -->
+            <!-- ----------------------- PAUSE SCREEN ----------------------- -->
+
             <div id="pause-screen">
-                <h2>Game Paused</h2>
-                <button id="resume-btn">Resume</button>
+                <h2>GAME PAUSED</h2>
+                <button id="resume-btn">RESUME</button>
             </div>
 
-            <!-- Game Over Screen -->
+            <!-- ----------------------- GAME OVER SCREEN ----------------------- -->
+
             <div id="game-over">
-                <h2>Game Over</h2>
-                <div id="final-score">Score: 0</div>
-                <button id="restart-btn">Play Again</button>
+                <h2>GAME OVER</h2>
+                <div id="final-score">SCORE: 0</div>
+                <button id="restart-btn">PLAY AGAIN</button>
             </div>
         </div>
 
