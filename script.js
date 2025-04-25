@@ -10,6 +10,9 @@ let gameLoopInterval;
 let asteroidInterval;
 let gameHeight;
 let gameWidth;
+let speedMultiplier = 1; // Added speed multiplier
+let spawnIntervalMultiplier = 1; // Added spawn interval multiplier
+const BASE_SPAWN_INTERVAL = 1500; // Base spawn interval in milliseconds
 
 // Character image mapping - using the exact filenames from the img folder
 const characterImages = {
@@ -122,6 +125,8 @@ function startGame() {
     gameHeight = window.innerHeight;
     gameWidth = window.innerWidth;
     score = 0;
+    speedMultiplier = 1; // Reset speed multiplier
+    spawnIntervalMultiplier = 1; // Reset spawn interval multiplier
     updateScore();
     playerY = gameHeight / 2;
     gameRunning = true;
@@ -136,7 +141,7 @@ function startGame() {
 
     // Start spawning planets
     spawnPlanet(); // Spawn first planet immediately
-    asteroidInterval = setInterval(spawnPlanet, 1500); // Then every 1.5 seconds
+    asteroidInterval = setInterval(spawnPlanet, BASE_SPAWN_INTERVAL);
 
     console.log("Game started successfully");
 }
@@ -171,6 +176,7 @@ function handleKeyPress(e) {
 
 // Update player position on screen
 function updatePlayerPosition() {
+    playerElement.style.left = `${gameWidth * 0.2}px`;
     playerElement.style.top = `${playerY}px`;
 }
 
@@ -208,12 +214,16 @@ function spawnPlanet() {
     // Add to game screen
     gameScreen.appendChild(planet);
 
-    // Add to asteroids array (keep the same array for simplicity)
+    // Calculate base speed and apply multiplier
+    const baseSpeed = Math.random() * 2 + 3; // Base speed between 3-5
+    const finalSpeed = baseSpeed * speedMultiplier;
+
+    // Add to asteroids array
     asteroids.push({
         element: planet,
         x: gameWidth,
         y: planetY,
-        speed: Math.random() * 2 + 3, // Random speed between 3-5
+        speed: finalSpeed,
         passed: false,
     });
 }
@@ -245,18 +255,18 @@ function movePlanets() {
 // Check for collisions
 function checkCollisions() {
     const playerRect = {
-        x: 100,
-        y: playerY - 125,
-        width: 250,
-        height: 250,
+        x: gameWidth * 0.2,
+        y: playerY - 50,
+        width: 100,
+        height: 100,
     };
 
     for (const planet of asteroids) {
         const planetRect = {
             x: planet.x,
-            y: planet.y - 50,
-            width: 100,
-            height: 100,
+            y: planet.y - 30,
+            width: 60,
+            height: 60,
         };
 
         // Check if player and planet rectangles intersect
@@ -276,6 +286,17 @@ function checkCollisions() {
 // Update score display
 function updateScore() {
     scoreDisplay.textContent = `Score: ${score}`;
+    // Increase speed multiplier based on score
+    speedMultiplier = 1 + (score * 0.01);
+    // Decrease spawn interval multiplier based on score
+    spawnIntervalMultiplier = Math.max(0.3, 1 - (score * 0.005)); // Minimum interval multiplier of 0.3
+    
+    // Update the spawn interval if the game is running
+    if (gameRunning && !isPaused) {
+        clearInterval(asteroidInterval);
+        const newInterval = BASE_SPAWN_INTERVAL * spawnIntervalMultiplier;
+        asteroidInterval = setInterval(spawnPlanet, newInterval);
+    }
 }
 
 // Toggle pause state
@@ -284,8 +305,11 @@ function togglePause() {
 
     if (isPaused) {
         pauseScreen.style.display = "flex";
+        clearInterval(asteroidInterval);
     } else {
         pauseScreen.style.display = "none";
+        // Resume with current spawn interval
+        asteroidInterval = setInterval(spawnPlanet, BASE_SPAWN_INTERVAL * spawnIntervalMultiplier);
     }
 }
 
