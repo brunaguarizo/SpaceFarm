@@ -46,7 +46,66 @@ body {
     position: relative;
     z-index: 1;
 }
+/* ------------------------- INSTRUCTION BOX------------------------- */
 
+.instructions-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--dark-purple);
+    border: 3px solid var(--light-green);
+    border-radius: var(--space-small);
+    padding: var(--space-medium);
+    z-index: 10;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 0 20px var(--mid-purple);
+}
+
+.instructions-box h3 {
+    color: var(--light-green);
+    font-size: calc(var(--text) * 1.2);
+    margin-bottom: var(--space-regular);
+}
+
+.instructions-box ul {
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: var(--space-large);
+    text-align: left;
+}
+
+.instructions-box li {
+    color: var(--light-purple);
+    font-size: var(--text);
+    margin-bottom: var(--space-small);
+    padding-left: var(--space-regular);
+    position: relative;
+}
+
+.instructions-box li:before {
+    content: "•";
+    color: var(--light-green);
+    position: absolute;
+    left: 0;
+}
+
+#close-instructions {
+    padding: var(--space-small) var(--space-regular);
+    background-color: var(--light-green);
+    color: var(--dark-purple);
+    border: none;
+    border-radius: var(--space-small);
+    font-size: calc(var(--text) * 0.8);
+    font-family: var(--font-family);
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#close-instructions:hover {
+    background-color: var(--mid-green);
+}
 /* ------------------------- CHARACTER SELECTI ------------------------- */
 #character-select {
     position: absolute;
