@@ -258,10 +258,10 @@ function movePlanets() {
 // Check for collisions
 function checkCollisions() {
     const playerRect = {
-        x: gameWidth * 0.2 + 50, // Adjust left position to target character center
-        y: playerY - 30, // Adjust top position to target character center
-        width: 100, // Smaller width for more accurate collision
-        height: 100, // Smaller height for more accurate collision
+        x: gameWidth * 0.2,
+        y: playerY - 50,
+        width: 100,
+        height: 100,
     };
 
     for (const planet of asteroids) {
