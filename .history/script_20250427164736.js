@@ -49,11 +49,7 @@ const closeInstructionsBtn = document.getElementById("close-instructions");
 // Initialize the game
 function init() {
     console.log("Game initializing...");
-    // Hide instructions box initially
-    const instructionsContainer = document.getElementById(
-        "instructions-container"
-    );
-    instructionsContainer.style.display = "none"; // Initially hide the instructions box
+
     // Character selection event listeners
     characterOptions.forEach((option) => {
         option.addEventListener("click", () => {
@@ -80,13 +76,13 @@ function init() {
 
         // Show instructions screen after selecting character
         instructionsContainer.style.display = "block";
+        instructionsContainer.style.visibility = "hidden";
     });
 
     // Instructions Button listener and displays
     closeInstructionsBtn.addEventListener("click", () => {
         instructionsContainer.style.display = "none"; // Hide instructions
         instructionsContainer.style.visibility = "hidden";
-        instructionsContainer.style.zIndex = -1;
         // Show game screen after instructions
         gameScreen.style.display = "block";
         startGame(); // Start the game after closing instructions

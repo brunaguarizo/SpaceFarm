@@ -34,6 +34,7 @@ const planetImages = [
 // DOM elements
 const characterOptions = document.querySelectorAll(".character-option");
 const confirmBtn = document.getElementById("confirm-btn");
+const GameContainer = document.getElementById("game-container");
 const characterSelectScreen = document.getElementById("character-select");
 const gameScreen = document.getElementById("game-screen");
 const pauseBtn = document.getElementById("pause-btn");

@@ -49,11 +49,7 @@ const closeInstructionsBtn = document.getElementById("close-instructions");
 // Initialize the game
 function init() {
     console.log("Game initializing...");
-    // Hide instructions box initially
-    const instructionsContainer = document.getElementById(
-        "instructions-container"
-    );
-    instructionsContainer.style.display = "none"; // Initially hide the instructions box
+
     // Character selection event listeners
     characterOptions.forEach((option) => {
         option.addEventListener("click", () => {

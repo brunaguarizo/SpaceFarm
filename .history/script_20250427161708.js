@@ -49,11 +49,7 @@ const closeInstructionsBtn = document.getElementById("close-instructions");
 // Initialize the game
 function init() {
     console.log("Game initializing...");
-    // Hide instructions box initially
-    const instructionsContainer = document.getElementById(
-        "instructions-container"
-    );
-    instructionsContainer.style.display = "none"; // Initially hide the instructions box
+
     // Character selection event listeners
     characterOptions.forEach((option) => {
         option.addEventListener("click", () => {
@@ -62,7 +58,6 @@ function init() {
             characterOptions.forEach((opt) => opt.classList.remove("selected"));
             // Add selected class to clicked option
             option.classList.add("selected");
-
             // Store selected character
             selectedCharacter = option.dataset.character;
             // Enable confirm button
@@ -73,23 +68,11 @@ function init() {
 
     // Confirm button event listener
     confirmBtn.addEventListener("click", () => {
-        console.log("Start button clicked, showing instructions...");
-
-        // Hide character selection screen
-        characterSelectScreen.style.display = "none";
-
-        // Show instructions screen after selecting character
-        instructionsContainer.style.display = "block";
+        console.log("Start button clicked, starting game...");
+        startGame();
     });
-
-    // Instructions Button listener and displays
     closeInstructionsBtn.addEventListener("click", () => {
-        instructionsContainer.style.display = "none"; // Hide instructions
-        instructionsContainer.style.visibility = "hidden";
-        instructionsContainer.style.zIndex = -1;
-        // Show game screen after instructions
-        gameScreen.style.display = "block";
-        startGame(); // Start the game after closing instructions
+        instructionsContainer.style.display = "none";
     });
 
     // Pause button event listener
