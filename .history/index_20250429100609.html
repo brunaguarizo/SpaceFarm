@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0" />
+        <title>Space Adventure</title>
+        <link
+            rel="stylesheet"
+            href="styles.css" />
+
+        <link
+            rel="preconnect"
+            href="https://fonts.googleapis.com" />
+        <link
+            rel="preconnect"
+            href="https://fonts.gstatic.com"
+            crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Ranchers&display=swap"
+            rel="stylesheet" />
+    </head>
+    <body>
+        <div id="game-container">
+            <div class="scrolling-background"></div>
+            <!-- ----------------------- Instructions ----------------------- -->
+            <div
+                id="instructions-container"
+                class="instructions-box">
+                <h3>HOW TO PLAY</h3>
+                <ul>
+                    <li>USE THE "UP" ARROW KEY OR "W" TO MOVE UP</li>
+                    <li>USE THE "DOWN" ARROW KEY OR "S" TO MOVE DOWN</li>
+                    <li>AVOID COLLIDING WITH PLANETS</li>
+                    <li>SCORW POINTS BY SURVIVING LONGER</li>
+                </ul>
+                <button id="close-instructions">GOT IT!</button>
+            </div>
+            <!-- ----------------------- CHARACTER SELESCTION SCREEN ----------------------- -->
+            <div id="character-select">
+                <h1>SPACE ANIMALS</h1>
+
+                <div class="text">CHOOSE A CHARACTER TO START</div>
+                <div class="character-options">
+                    <div
+                        class="character-option"
+                        data-character="astronaut">
+                        <div class="character-img">
+                            <img
+                                src="img/dog.png"
+                                alt="Space Dog" />
+                        </div>
+                        <div class="character-label">SPACE DOG</div>
+                    </div>
+                    <div
+                        class="character-option"
+                        data-character="alien">
+                        <div class="character-img">
+                            <img
+                                src="img/pig.png"
+                                alt="Space Pig" />
+                        </div>
+                        <div class="character-label">SPACE PIG</div>
+                    </div>
+                    <div
+                        class="character-option"
+                        data-character="robot">
+                        <div class="character-img">
+                            <img
+                                src="img/cat.png"
+                                alt="Space Cat" />
+                        </div>
+                        <div class="character-label">SPACE CAT</div>
+                    </div>
+                </div>
+                <button
+                    id="confirm-btn"
+                    disabled>
+                    START MISSION
+                </button>
+            </div>
+
+            <!-- ----------------------- GAME SCREEN ----------------------- -->
+
+            <div id="game-screen">
+                <div id="player"></div>
+                <div id="score-container">
+                    <div id="score">SCORE: 0</div>
+                    <button id="pause-btn">PAUSE</button>
+                </div>
+            </div>
+
+            <!-- ----------------------- PAUSE SCREEN ----------------------- -->
+
+            <div id="pause-screen">
+                <h2>GAME PAUSED</h2>
+                <button id="resume-btn">RESUME</button>
+            </div>
+
+            <!-- ----------------------- GAME OVER SCREEN ----------------------- -->
+
+            <div id="game-over">
+                <h2>GAME OVER</h2>
+                <div id="final-score">SCORE: 0</div>
+                <button id="restart-btn">PLAY AGAIN</button>
+            </div>
+        </div>
+
+        <script src="script.js"></script>
+    </body>
+</html>

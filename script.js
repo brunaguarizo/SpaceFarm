@@ -10,16 +10,26 @@ let gameLoopInterval;
 let asteroidInterval;
 let gameHeight;
 let gameWidth;
+let speedMultiplier = 1; // Added speed multiplier
+let spawnIntervalMultiplier = 1; // Added spawn interval multiplier
+const BASE_SPAWN_INTERVAL = 1500; // Base spawn interval in milliseconds
 
-// Character emoji mapping
-const characterEmojis = {
-    pig: "🐷",
-    dog: "🐶",
-    cat: "🐱",
+// Character image mapping - using the exact filenames from the img folder
+const characterImages = {
+    astronaut: "img/dog.png",
+    alien: "img/pig.png",
+    robot: "img/cat.png",
 };
 
-// Asteroid options
-const asteroidOptions = ["🌑", "☄️", "🪨", "💫"];
+// Planet image options - using the exact filenames from the img folder
+const planetImages = [
+    "img/planet1.png",
+    "img/planet2.png",
+    "img/planet3.png",
+    "img/planet4.png",
+    "img/planet5.png",
+    "img/planet6.png",
+];
 
 // DOM elements
 const characterOptions = document.querySelectorAll(".character-option");
@@ -33,25 +43,54 @@ const gameOverScreen = document.getElementById("game-over");
 const finalScoreDisplay = document.getElementById("final-score");
 const restartBtn = document.getElementById("restart-btn");
 const scoreDisplay = document.getElementById("score");
+const instructionsContainer = document.getElementById("instructions-container");
+const closeInstructionsBtn = document.getElementById("close-instructions");
 
 // Initialize the game
 function init() {
+    console.log("Game initializing...");
+    // Hide instructions box initially
+    const instructionsContainer = document.getElementById(
+        "instructions-container"
+    );
+    instructionsContainer.style.display = "none"; // Initially hide the instructions box
     // Character selection event listeners
     characterOptions.forEach((option) => {
         option.addEventListener("click", () => {
+            console.log("Character option clicked:", option.dataset.character);
             // Remove selected class from all options
             characterOptions.forEach((opt) => opt.classList.remove("selected"));
             // Add selected class to clicked option
             option.classList.add("selected");
+
             // Store selected character
             selectedCharacter = option.dataset.character;
             // Enable confirm button
             confirmBtn.disabled = false;
+            console.log("Selected character:", selectedCharacter);
         });
     });
 
     // Confirm button event listener
-    confirmBtn.addEventListener("click", startGame);
+    confirmBtn.addEventListener("click", () => {
+        console.log("Start button clicked, showing instructions...");
+
+        // Hide character selection screen
+        characterSelectScreen.style.display = "none";
+
+        // Show instructions screen after selecting character
+        instructionsContainer.style.display = "block";
+    });
+
+    // Instructions Button listener and displays
+    closeInstructionsBtn.addEventListener("click", () => {
+        instructionsContainer.style.display = "none"; // Hide instructions
+        instructionsContainer.style.visibility = "hidden";
+        instructionsContainer.style.zIndex = -1;
+        // Show game screen after instructions
+        gameScreen.style.display = "block";
+        startGame(); // Start the game after closing instructions
+    });
 
     // Pause button event listener
     pauseBtn.addEventListener("click", togglePause);
@@ -64,10 +103,19 @@ function init() {
 
     // Keyboard event listeners
     document.addEventListener("keydown", handleKeyPress);
+
+    console.log("Game initialized successfully");
 }
 
 // Start the game
 function startGame() {
+    console.log("Starting game with character:", selectedCharacter);
+
+    if (!selectedCharacter) {
+        console.error("No character selected!");
+        return;
+    }
+
     // Hide character selection screen
     characterSelectScreen.style.display = "none";
     // Show game screen
@@ -75,12 +123,32 @@ function startGame() {
 
     // Set up player
     playerElement = document.getElementById("player");
-    playerElement.innerHTML = characterEmojis[selectedCharacter];
+    if (!playerElement) {
+        console.error("Player element not found!");
+        return;
+    }
+
+    const playerImagePath = characterImages[selectedCharacter];
+    console.log("Loading player image:", playerImagePath);
+
+    // Create image element with error handling
+    const playerImg = document.createElement("img");
+    playerImg.src = playerImagePath;
+    playerImg.alt = "Player";
+    playerImg.onerror = function () {
+        console.error("Error loading player image:", playerImagePath);
+        // Fallback to text if image fails to load
+        playerElement.innerHTML = "Player";
+    };
+    playerElement.innerHTML = "";
+    playerElement.appendChild(playerImg);
 
     // Initialize variables
     gameHeight = window.innerHeight;
     gameWidth = window.innerWidth;
     score = 0;
+    speedMultiplier = 1; // Reset speed multiplier
+    spawnIntervalMultiplier = 1; // Reset spawn interval multiplier
     updateScore();
     playerY = gameHeight / 2;
     gameRunning = true;
@@ -93,17 +161,19 @@ function startGame() {
     // Start game loop
     gameLoopInterval = setInterval(gameLoop, 16); // ~60fps
 
-    // Start spawning asteroids
-    spawnAsteroid(); // Spawn first asteroid immediately
-    asteroidInterval = setInterval(spawnAsteroid, 1500); // Then every 1.5 seconds
+    // Start spawning planets
+    spawnPlanet(); // Spawn first planet immediately
+    asteroidInterval = setInterval(spawnPlanet, BASE_SPAWN_INTERVAL);
+
+    console.log("Game started successfully");
 }
 
 // Game loop
 function gameLoop() {
     if (!gameRunning || isPaused) return;
 
-    // Move asteroids
-    moveAsteroids();
+    // Move planets
+    movePlanets();
 
     // Check collisions
     checkCollisions();
@@ -113,76 +183,95 @@ function gameLoop() {
 function handleKeyPress(e) {
     if (!gameRunning || isPaused) return;
 
-    const moveDistance = 20;
+    const moveDistance = 60; // Increased for even faster movement
 
     if (e.key === "ArrowUp" || e.key === "w") {
         // Move up
-        playerY = Math.max(50, playerY - moveDistance);
+        playerY = Math.max(125, playerY - moveDistance);
         updatePlayerPosition();
     } else if (e.key === "ArrowDown" || e.key === "s") {
         // Move down
-        playerY = Math.min(gameHeight - 50, playerY + moveDistance);
+        playerY = Math.min(gameHeight - 125, playerY + moveDistance);
         updatePlayerPosition();
     }
 }
 
 // Update player position on screen
 function updatePlayerPosition() {
+    playerElement.style.left = `${gameWidth * 0.2}px`;
     playerElement.style.top = `${playerY}px`;
 }
 
-// Spawn a new asteroid
-function spawnAsteroid() {
+// Spawn a new planet
+function spawnPlanet() {
     if (!gameRunning || isPaused) return;
 
-    // Create asteroid element
-    const asteroid = document.createElement("div");
-    asteroid.classList.add("asteroid");
+    // Create planet element
+    const planet = document.createElement("div");
+    planet.classList.add("asteroid"); // Keep the same class for styling
 
-    // Set random asteroid type
-    const asteroidType =
-        asteroidOptions[Math.floor(Math.random() * asteroidOptions.length)];
-    asteroid.innerHTML = asteroidType;
+    // Set random planet type
+    const planetType =
+        planetImages[Math.floor(Math.random() * planetImages.length)];
+    console.log("Loading planet image:", planetType);
+
+    // Create image element with error handling
+    const planetImg = document.createElement("img");
+    planetImg.src = planetType;
+    planetImg.alt = "Planet";
+    planetImg.onerror = function () {
+        console.error("Error loading planet image:", planetType);
+        // Fallback to text if image fails to load
+        planet.innerHTML = "Planet";
+    };
+    planet.appendChild(planetImg);
 
     // Set random position (y-axis)
-    const asteroidY = Math.random() * (gameHeight - 100) + 50;
+    const planetY = Math.random() * (gameHeight - 100) + 50;
 
-    // Set asteroid properties
-    asteroid.style.left = `${gameWidth}px`;
-    asteroid.style.top = `${asteroidY}px`;
+    // Set planet properties
+    planet.style.left = `${gameWidth}px`;
+    planet.style.top = `${planetY}px`;
 
     // Add to game screen
-    gameScreen.appendChild(asteroid);
+    gameScreen.appendChild(planet);
+
+    // Calculate base speed and apply multiplier
+    const baseSpeed = Math.random() * 2 + 3; // Base speed between 3-5
+    const finalSpeed = baseSpeed * speedMultiplier;
 
     // Add to asteroids array
     asteroids.push({
-        element: asteroid,
+        element: planet,
         x: gameWidth,
-        y: asteroidY,
-        speed: Math.random() * 3 + 5, // Random speed between 5-8
+        y: planetY,
+        speed: finalSpeed,
         passed: false,
     });
 }
 
-// Move all asteroids
-function moveAsteroids() {
+// Move all planets
+function movePlanets() {
     for (let i = asteroids.length - 1; i >= 0; i--) {
-        const asteroid = asteroids[i];
+        // Exit if game is no longer running (e.g., after collision)
+        if (!gameRunning || isPaused) return;
 
-        // Move asteroid
-        asteroid.x -= asteroid.speed;
-        asteroid.element.style.left = `${asteroid.x}px`;
+        const planet = asteroids[i];
 
-        // Check if asteroid passed the player
-        if (!asteroid.passed && asteroid.x < 100) {
-            asteroid.passed = true;
+        // Move planet
+        planet.x -= planet.speed;
+        planet.element.style.left = `${planet.x}px`;
+
+        // Check if planet passed the player
+        if (!planet.passed && planet.x < 100) {
+            planet.passed = true;
             score += 10;
             updateScore();
         }
 
-        // Remove asteroid if it's off-screen
-        if (asteroid.x < -50) {
-            gameScreen.removeChild(asteroid.element);
+        // Remove planet if it's off-screen
+        if (planet.x < -50) {
+            gameScreen.removeChild(planet.element);
             asteroids.splice(i, 1);
         }
     }
@@ -191,26 +280,26 @@ function moveAsteroids() {
 // Check for collisions
 function checkCollisions() {
     const playerRect = {
-        x: 100,
-        y: playerY - 30,
-        width: 60,
-        height: 60,
+        x: gameWidth * 0.2 + 50, // Adjust left position to target character center
+        y: playerY - 30, // Adjust top position to target character center
+        width: 100, // Smaller width for more accurate collision
+        height: 100, // Smaller height for more accurate collision
     };
 
-    for (const asteroid of asteroids) {
-        const asteroidRect = {
-            x: asteroid.x,
-            y: asteroid.y - 15,
-            width: 30,
-            height: 30,
+    for (const planet of asteroids) {
+        const planetRect = {
+            x: planet.x,
+            y: planet.y - 30,
+            width: 60,
+            height: 60,
         };
 
-        // Check if player and asteroid rectangles intersect
+        // Check if player and planet rectangles intersect
         if (
-            playerRect.x < asteroidRect.x + asteroidRect.width &&
-            playerRect.x + playerRect.width > asteroidRect.x &&
-            playerRect.y < asteroidRect.y + asteroidRect.height &&
-            playerRect.y + playerRect.height > asteroidRect.y
+            playerRect.x < planetRect.x + planetRect.width &&
+            playerRect.x + playerRect.width > planetRect.x &&
+            playerRect.y < planetRect.y + planetRect.height &&
+            playerRect.y + playerRect.height > planetRect.y
         ) {
             // Collision detected
             gameOver();
@@ -222,6 +311,17 @@ function checkCollisions() {
 // Update score display
 function updateScore() {
     scoreDisplay.textContent = `Score: ${score}`;
+    // Increase speed multiplier based on score
+    speedMultiplier = 1 + score * 0.01;
+    // Decrease spawn interval multiplier based on score
+    spawnIntervalMultiplier = Math.max(0.3, 1 - score * 0.005); // Minimum interval multiplier of 0.3
+
+    // Update the spawn interval if the game is running
+    if (gameRunning && !isPaused) {
+        clearInterval(asteroidInterval);
+        const newInterval = BASE_SPAWN_INTERVAL * spawnIntervalMultiplier;
+        asteroidInterval = setInterval(spawnPlanet, newInterval);
+    }
 }
 
 // Toggle pause state
@@ -230,8 +330,14 @@ function togglePause() {
 
     if (isPaused) {
         pauseScreen.style.display = "flex";
+        clearInterval(asteroidInterval);
     } else {
         pauseScreen.style.display = "none";
+        // Resume with current spawn interval
+        asteroidInterval = setInterval(
+            spawnPlanet,
+            BASE_SPAWN_INTERVAL * spawnIntervalMultiplier
+        );
     }
 }
 
@@ -243,8 +349,14 @@ function gameOver() {
     clearInterval(gameLoopInterval);
     clearInterval(asteroidInterval);
 
+    // Remove all planets
+    asteroids.forEach((planet) => {
+        gameScreen.removeChild(planet.element);
+    });
+    asteroids = [];
+
     // Update final score
-    finalScoreDisplay.textContent = `Score: ${score}`;
+    finalScoreDisplay.textContent = `Final Score: ${score}`;
 
     // Show game over screen
     gameOverScreen.style.display = "flex";
@@ -252,10 +364,10 @@ function gameOver() {
 
 // Restart game
 function restartGame() {
-    // Clear asteroids
-    asteroids.forEach((asteroid) => {
-        if (asteroid.element.parentNode) {
-            asteroid.element.parentNode.removeChild(asteroid.element);
+    // Clear planets
+    asteroids.forEach((planet) => {
+        if (planet.element.parentNode) {
+            planet.element.parentNode.removeChild(planet.element);
         }
     });
 

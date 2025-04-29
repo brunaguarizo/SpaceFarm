@@ -1,0 +1,314 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-family: var(--font-family);
+    background-color: var(--mid-green);
+}
+
+#game-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background-image: url("img/space-bg.jpg");
+    background-size: cover;
+    overflow: hidden;
+}
+
+/* ------------------------- Character Selection Screen ------------------------- */
+#character-select {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    background-color: rgba(
+        73,
+        19,
+        191,
+        0.8
+    ); /* Using dark-purple with opacity */
+}
+
+#character-select h1 {
+    color: var(--light-green);
+    font-size: var(--header);
+    margin-bottom: var(--space-large);
+    text-shadow: 0 0 10px var(--mid-purple);
+    text-align: center;
+}
+
+h2 {
+    color: var(--light-green);
+    font-size: var(--text);
+    margin-bottom: var(--space-extra-large);
+    text-shadow: 0 0 10px var(--mid-purple);
+    text-align: center;
+}
+
+.character-options {
+    display: flex;
+    gap: var(--space-extra-large);
+    margin-bottom: var(--space-extra-large);
+}
+
+.character-option {
+    width: var(--space-medium);
+    height: var(--space-medium);
+    background-color: var(--dark-purple);
+    border-radius: var(--space-small);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    padding: var(--space-small);
+    border: 2px solid transparent;
+}
+
+.character-option:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px var(--light-purple);
+}
+
+.character-option.selected {
+    border-color: var(--light-green);
+    box-shadow: 0 0 20px var(--light-green);
+}
+
+.character-img {
+    width: 10%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.character-label {
+    color: var(--light-green);
+    font-size: var(--text);
+}
+
+#confirm-btn {
+    padding: var(--space-regular) var(--space-medium);
+    background-color: var(--light-green);
+    color: var(--dark-purple);
+    border: none;
+    border-radius: var(--space-small);
+    font-size: var(--text);
+    font-family: var(--font-family);
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#confirm-btn:hover {
+    background-color: var(--mid-green);
+}
+
+#confirm-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+/* ------------------------- Game Screen -------------------------*/
+#game-screen {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+}
+
+#player {
+    position: absolute;
+    width: var(--space-large);
+    height: var(--space-large);
+    left: var(--space-extra-large);
+    top: 50%;
+    transform: translateY(-50%);
+    line-height: 1;
+    z-index: 5;
+}
+
+#player img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.asteroid {
+    position: absolute;
+    width: var(--space-medium);
+    height: var(--space-medium);
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 0 15px var(--light-purple);
+}
+
+.asteroid img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#score-container {
+    position: absolute;
+    top: var(--space-regular);
+    right: var(--space-regular);
+    display: flex;
+    align-items: center;
+    gap: var(--space-regular);
+    z-index: 5;
+}
+
+#score {
+    color: var(--light-green);
+    font-size: var(--text);
+    font-weight: bold;
+    background-color: var(--dark-purple);
+    padding: var(--space-small) var(--space-regular);
+    border-radius: var(--space-small);
+    border: 2px solid var(--light-green);
+}
+
+#pause-btn {
+    background-color: var(--dark-purple);
+    color: var(--light-green);
+    border: 2px solid var(--light-green);
+    border-radius: var(--space-small);
+    font-size: var(--text);
+    font-family: var(--font-family);
+    padding: var(--space-small) var(--space-regular);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+#pause-btn:hover {
+    background-color: var(--mid-purple);
+    box-shadow: 0 0 10px var(--light-purple);
+}
+
+/* ------------------------- Game Over Screen ------------------------- */
+#game-over {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(
+        73,
+        19,
+        191,
+        0.8
+    ); /* Using dark-purple with opacity */
+    z-index: 15;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#game-over h2 {
+    color: var(--light-pink);
+    font-size: var(--header);
+    margin-bottom: var(--space-regular);
+    text-shadow: 0 0 10px var(--mid-pink);
+}
+
+#final-score {
+    color: var(--light-green);
+    font-size: var(--text);
+    margin-bottom: var(--space-extra-large);
+}
+
+#restart-btn {
+    padding: var(--space-regular) var(--space-medium);
+    background-color: var(--light-green);
+    color: var(--dark-purple);
+    border: none;
+    border-radius: var(--space-small);
+    font-size: var(--text);
+    font-family: var(--font-family);
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#restart-btn:hover {
+    background-color: var(--mid-green);
+}
+
+/* Utility Classes */
+.invisible {
+    opacity: 0;
+}
+
+/* Pause Screen */
+#pause-screen {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(
+        73,
+        19,
+        191,
+        0.8
+    ); /* Using dark-purple with opacity */
+    z-index: 12;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: var(--light-green);
+}
+
+#pause-screen h2 {
+    font-size: var(--header);
+    margin-bottom: var(--space-extra-large);
+}
+
+#resume-btn {
+    padding: var(--space-regular) var(--space-medium);
+    background-color: var(--light-green);
+    color: var(--dark-purple);
+    border: none;
+    border-radius: var(--space-small);
+    font-size: var(--text);
+    font-family: var(--font-family);
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#resume-btn:hover {
+    background-color: var(--mid-green);
+}
+
+/* --------------------------- variables  --------------------------- */
+:root {
+    --font-family: "Ranchers", sans-serif;
+    --header: 80px;
+    --text: 24px;
+
+    --light-green: #bfff41;
+    --mid-green: #a3de1a;
+    --dark-green: #46b800;
+    --light-pink: #ffc2ec;
+    --mid-pink: #f0429c;
+    --dark-pink: #910b64;
+    --light-purple: #dcccff;
+    --mid-purple: #8655ef;
+    --dark-purple: #4913bf;
+
+    --space-extra-small: 4px;
+    --space-small: 8px;
+    --space-regular: 16px;
+    --space-medium: 32px;
+    --space-large: 48px;
+    --space-extra-large: 80px;
+    --space-huge: 160px;
+}
