@@ -43,17 +43,11 @@ const gameOverScreen = document.getElementById("game-over");
 const finalScoreDisplay = document.getElementById("final-score");
 const restartBtn = document.getElementById("restart-btn");
 const scoreDisplay = document.getElementById("score");
-const instructionsContainer = document.getElementById("instructions-container");
-const closeInstructionsBtn = document.getElementById("close-instructions");
 
 // Initialize the game
 function init() {
     console.log("Game initializing...");
-    // Hide instructions box initially
-    const instructionsContainer = document.getElementById(
-        "instructions-container"
-    );
-    instructionsContainer.style.display = "none"; // Initially hide the instructions box
+
     // Character selection event listeners
     characterOptions.forEach((option) => {
         option.addEventListener("click", () => {
@@ -62,7 +56,6 @@ function init() {
             characterOptions.forEach((opt) => opt.classList.remove("selected"));
             // Add selected class to clicked option
             option.classList.add("selected");
-
             // Store selected character
             selectedCharacter = option.dataset.character;
             // Enable confirm button
@@ -73,23 +66,8 @@ function init() {
 
     // Confirm button event listener
     confirmBtn.addEventListener("click", () => {
-        console.log("Start button clicked, showing instructions...");
-
-        // Hide character selection screen
-        characterSelectScreen.style.display = "none";
-
-        // Show instructions screen after selecting character
-        instructionsContainer.style.display = "block";
-    });
-
-    // Instructions Button listener and displays
-    closeInstructionsBtn.addEventListener("click", () => {
-        instructionsContainer.style.display = "none"; // Hide instructions
-        instructionsContainer.style.visibility = "hidden";
-        instructionsContainer.style.zIndex = -1;
-        // Show game screen after instructions
-        gameScreen.style.display = "block";
-        startGame(); // Start the game after closing instructions
+        console.log("Start button clicked, starting game...");
+        startGame();
     });
 
     // Pause button event listener
@@ -253,9 +231,6 @@ function spawnPlanet() {
 // Move all planets
 function movePlanets() {
     for (let i = asteroids.length - 1; i >= 0; i--) {
-        // Exit if game is no longer running (e.g., after collision)
-        if (!gameRunning || isPaused) return;
-
         const planet = asteroids[i];
 
         // Move planet
@@ -280,10 +255,10 @@ function movePlanets() {
 // Check for collisions
 function checkCollisions() {
     const playerRect = {
-        x: gameWidth * 0.2 + 50, // Adjust left position to target character center
-        y: playerY - 30, // Adjust top position to target character center
-        width: 100, // Smaller width for more accurate collision
-        height: 100, // Smaller height for more accurate collision
+        x: gameWidth * 0.2,
+        y: playerY - 50,
+        width: 100,
+        height: 100,
     };
 
     for (const planet of asteroids) {
@@ -312,10 +287,10 @@ function checkCollisions() {
 function updateScore() {
     scoreDisplay.textContent = `Score: ${score}`;
     // Increase speed multiplier based on score
-    speedMultiplier = 1 + score * 0.01;
+    speedMultiplier = 1 + (score * 0.01);
     // Decrease spawn interval multiplier based on score
-    spawnIntervalMultiplier = Math.max(0.3, 1 - score * 0.005); // Minimum interval multiplier of 0.3
-
+    spawnIntervalMultiplier = Math.max(0.3, 1 - (score * 0.005)); // Minimum interval multiplier of 0.3
+    
     // Update the spawn interval if the game is running
     if (gameRunning && !isPaused) {
         clearInterval(asteroidInterval);
@@ -334,10 +309,7 @@ function togglePause() {
     } else {
         pauseScreen.style.display = "none";
         // Resume with current spawn interval
-        asteroidInterval = setInterval(
-            spawnPlanet,
-            BASE_SPAWN_INTERVAL * spawnIntervalMultiplier
-        );
+        asteroidInterval = setInterval(spawnPlanet, BASE_SPAWN_INTERVAL * spawnIntervalMultiplier);
     }
 }
 
@@ -364,57 +336,24 @@ function gameOver() {
 
 // Restart game
 function restartGame() {
-    // Clear intervals
-    clearInterval(gameLoopInterval);
-    clearInterval(asteroidInterval);
-
     // Clear planets
     asteroids.forEach((planet) => {
         if (planet.element.parentNode) {
             planet.element.parentNode.removeChild(planet.element);
         }
     });
-    asteroids = [];
-
-    // Reset game state variables
-    score = 0;
-    gameRunning = false;
-    isPaused = false;
-    speedMultiplier = 1;
-    spawnIntervalMultiplier = 1;
-    playerY = gameHeight / 2;
-
-    // Update score display
-    updateScore();
 
     // Hide game over screen
     gameOverScreen.style.display = "none";
-
-    // Reset instructions screen
-    instructionsContainer.style.display = "none";
-    instructionsContainer.style.visibility = "visible";
-    instructionsContainer.style.zIndex = 10;
 
     // Go back to character selection
     gameScreen.style.display = "none";
     characterSelectScreen.style.display = "flex";
 
-    // Reset character selection and reload images
-    characterOptions.forEach((opt) => {
-        opt.classList.remove("selected");
-        // Reload character images
-        const img = opt.querySelector("img");
-        if (img) {
-            img.src = img.src; // This forces the image to reload
-        }
-    });
+    // Reset character selection
+    characterOptions.forEach((opt) => opt.classList.remove("selected"));
     confirmBtn.disabled = true;
     selectedCharacter = "";
-
-    // Clear player element
-    if (playerElement) {
-        playerElement.innerHTML = "";
-    }
 }
 
 // Initialize the game when the page loads

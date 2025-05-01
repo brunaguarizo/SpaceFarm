@@ -390,31 +390,14 @@ function restartGame() {
     // Hide game over screen
     gameOverScreen.style.display = "none";
 
-    // Reset instructions screen
-    instructionsContainer.style.display = "none";
-    instructionsContainer.style.visibility = "visible";
-    instructionsContainer.style.zIndex = 10;
-
     // Go back to character selection
     gameScreen.style.display = "none";
     characterSelectScreen.style.display = "flex";
 
-    // Reset character selection and reload images
-    characterOptions.forEach((opt) => {
-        opt.classList.remove("selected");
-        // Reload character images
-        const img = opt.querySelector("img");
-        if (img) {
-            img.src = img.src; // This forces the image to reload
-        }
-    });
+    // Reset character selection
+    characterOptions.forEach((opt) => opt.classList.remove("selected"));
     confirmBtn.disabled = true;
     selectedCharacter = "";
-
-    // Clear player element
-    if (playerElement) {
-        playerElement.innerHTML = "";
-    }
 }
 
 // Initialize the game when the page loads
