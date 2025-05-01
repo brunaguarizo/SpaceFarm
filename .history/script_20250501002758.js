@@ -198,7 +198,7 @@ function handleKeyPress(e) {
 
 // Update player position on screen
 function updatePlayerPosition() {
-    playerElement.style.left = `${gameWidth * 0.1}px`;
+    playerElement.style.left = `${gameWidth * 0.2}px`;
     playerElement.style.top = `${playerY}px`;
 }
 
@@ -280,18 +280,18 @@ function movePlanets() {
 // Check for collisions
 function checkCollisions() {
     const playerRect = {
-        x: gameWidth * 0.2 + 30, // Reduced left offset for more overlap
-        y: playerY - 20, // Reduced top offset for more overlap
-        width: 80, // Reduced width for more accurate collision
-        height: 80, // Reduced height for more accurate collision
+        x: gameWidth * 0.2 + 50, // Adjust left position to target character center
+        y: playerY - 30, // Adjust top position to target character center
+        width: 100, // Smaller width for more accurate collision
+        height: 100, // Smaller height for more accurate collision
     };
 
     for (const planet of asteroids) {
         const planetRect = {
-            x: planet.x + 10, // Added offset to allow more overlap
-            y: planet.y - 20, // Reduced top offset for more overlap
-            width: 40, // Reduced width for more accurate collision
-            height: 40, // Reduced height for more accurate collision
+            x: planet.x,
+            y: planet.y - 30,
+            width: 60,
+            height: 60,
         };
 
         // Check if player and planet rectangles intersect
@@ -390,31 +390,14 @@ function restartGame() {
     // Hide game over screen
     gameOverScreen.style.display = "none";
 
-    // Reset instructions screen
-    instructionsContainer.style.display = "none";
-    instructionsContainer.style.visibility = "visible";
-    instructionsContainer.style.zIndex = 10;
-
     // Go back to character selection
     gameScreen.style.display = "none";
     characterSelectScreen.style.display = "flex";
 
-    // Reset character selection and reload images
-    characterOptions.forEach((opt) => {
-        opt.classList.remove("selected");
-        // Reload character images
-        const img = opt.querySelector("img");
-        if (img) {
-            img.src = img.src; // This forces the image to reload
-        }
-    });
+    // Reset character selection
+    characterOptions.forEach((opt) => opt.classList.remove("selected"));
     confirmBtn.disabled = true;
     selectedCharacter = "";
-
-    // Clear player element
-    if (playerElement) {
-        playerElement.innerHTML = "";
-    }
 }
 
 // Initialize the game when the page loads

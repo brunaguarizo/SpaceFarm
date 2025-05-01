@@ -198,7 +198,7 @@ function handleKeyPress(e) {
 
 // Update player position on screen
 function updatePlayerPosition() {
-    playerElement.style.left = `${gameWidth * 0.1}px`;
+    playerElement.style.left = `${gameWidth * 0.2}px`;
     playerElement.style.top = `${playerY}px`;
 }
 
@@ -280,18 +280,18 @@ function movePlanets() {
 // Check for collisions
 function checkCollisions() {
     const playerRect = {
-        x: gameWidth * 0.2 + 30, // Reduced left offset for more overlap
-        y: playerY - 20, // Reduced top offset for more overlap
-        width: 80, // Reduced width for more accurate collision
-        height: 80, // Reduced height for more accurate collision
+        x: gameWidth * 0.2 + 50, // Adjust left position to target character center
+        y: playerY - 30, // Adjust top position to target character center
+        width: 100, // Smaller width for more accurate collision
+        height: 100, // Smaller height for more accurate collision
     };
 
     for (const planet of asteroids) {
         const planetRect = {
-            x: planet.x + 10, // Added offset to allow more overlap
-            y: planet.y - 20, // Reduced top offset for more overlap
-            width: 40, // Reduced width for more accurate collision
-            height: 40, // Reduced height for more accurate collision
+            x: planet.x,
+            y: planet.y - 30,
+            width: 60,
+            height: 60,
         };
 
         // Check if player and planet rectangles intersect

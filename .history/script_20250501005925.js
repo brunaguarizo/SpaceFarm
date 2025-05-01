@@ -198,7 +198,7 @@ function handleKeyPress(e) {
 
 // Update player position on screen
 function updatePlayerPosition() {
-    playerElement.style.left = `${gameWidth * 0.1}px`;
+    playerElement.style.left = `${gameWidth * 0.2}px`;
     playerElement.style.top = `${playerY}px`;
 }
 
