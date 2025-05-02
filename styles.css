@@ -116,7 +116,6 @@ body {
     justify-content: center;
     align-items: center;
     z-index: 10;
-    background-color: rgba(73, 19, 191, 0.8);
 }
 
 h1 {
@@ -235,13 +234,22 @@ h1 {
     object-fit: contain;
 }
 
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 .asteroid {
     position: absolute;
     width: 100px;
     height: 100px;
     border-radius: 50%;
     overflow: hidden;
-    box-shadow: 0 0 15px var(--light-purple);
+    animation: spin 3s linear infinite;
 }
 
 .asteroid img {
