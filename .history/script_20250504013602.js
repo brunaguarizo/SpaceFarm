@@ -116,7 +116,7 @@ function init() {
 // Start the game
 function startGame() {
     console.log("Starting game with character:", selectedCharacter);
-    gameStartSound.play();
+    gameOverSound.play();
     backgroundSound.play();
 
     if (!selectedCharacter) {

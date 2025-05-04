@@ -15,8 +15,6 @@ let spawnIntervalMultiplier = 1; // Added spawn interval multiplier
 const BASE_SPAWN_INTERVAL = 1500; // Base spawn interval in milliseconds
 let backgroundSound = new Audio("./audio/background.wav");
 backgroundSound.loop = true;
-let gameOverSound = new Audio("./audio/gameover.wav");
-let gameStartSound = new Audio("./audio/start.wav");
 
 // Character image mapping - using the exact filenames from the img folder
 const characterImages = {
@@ -116,8 +114,6 @@ function init() {
 // Start the game
 function startGame() {
     console.log("Starting game with character:", selectedCharacter);
-    gameStartSound.play();
-    backgroundSound.play();
 
     if (!selectedCharacter) {
         console.error("No character selected!");
@@ -194,10 +190,16 @@ function handleKeyPress(e) {
     const moveDistance = 60; // Increased for even faster movement
 
     if (e.key === "ArrowUp" || e.key === "w") {
+        // Play background music
+        backgroundSound.play();
+
         // Move up
         playerY = Math.max(125, playerY - moveDistance);
         updatePlayerPosition();
     } else if (e.key === "ArrowDown" || e.key === "s") {
+        // Play background music
+        backgroundSound.play();
+
         // Move down
         playerY = Math.min(gameHeight - 125, playerY + moveDistance);
         updatePlayerPosition();
@@ -371,7 +373,6 @@ function gameOver() {
 
     if (gameOver) {
         backgroundSound.pause();
-        gameOverSound.play();
     }
 }
 

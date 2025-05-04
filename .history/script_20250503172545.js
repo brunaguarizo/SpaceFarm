@@ -13,10 +13,6 @@ let gameWidth;
 let speedMultiplier = 1; // Added speed multiplier
 let spawnIntervalMultiplier = 1; // Added spawn interval multiplier
 const BASE_SPAWN_INTERVAL = 1500; // Base spawn interval in milliseconds
-let backgroundSound = new Audio("./audio/background.wav");
-backgroundSound.loop = true;
-let gameOverSound = new Audio("./audio/gameover.wav");
-let gameStartSound = new Audio("./audio/start.wav");
 
 // Character image mapping - using the exact filenames from the img folder
 const characterImages = {
@@ -49,6 +45,9 @@ const restartBtn = document.getElementById("restart-btn");
 const scoreDisplay = document.getElementById("score");
 const instructionsContainer = document.getElementById("instructions-container");
 const closeInstructionsBtn = document.getElementById("close-instructions");
+const bgMusic = document.getElementById("bg-music");
+const startMusic = document.getElementById("start-sound");
+const gameOverMusic = document.getElementById("game-over-sound");
 
 // Initialize the game
 function init() {
@@ -91,10 +90,8 @@ function init() {
         instructionsContainer.style.display = "none"; // Hide instructions
         instructionsContainer.style.visibility = "hidden";
         instructionsContainer.style.zIndex = -1;
-
         // Show game screen after instructions
         gameScreen.style.display = "block";
-
         startGame(); // Start the game after closing instructions
     });
 
@@ -114,10 +111,15 @@ function init() {
 }
 
 // Start the game
+var myGamePiece;
+var myObstacles = [];
+var mySound;
+
 function startGame() {
+    myGamePiece = new component(30, 30, "red", 10, 120);
+    mySound = new sound("bounce.mp3");
+    myGameArea.start();
     console.log("Starting game with character:", selectedCharacter);
-    gameStartSound.play();
-    backgroundSound.play();
 
     if (!selectedCharacter) {
         console.error("No character selected!");
@@ -175,6 +177,20 @@ function startGame() {
 
     console.log("Game started successfully");
 }
+
+function updateGameArea() {
+    var x, height, gap, minHeight, maxHeight, minGap, maxGap;
+    for (i = 0; i < myObstacles.length; i += 1) {
+      if (myGamePiece.crashWith(myObstacles[i])) {
+        mySound.play();
+        myGameArea.stop();
+        return;
+      }
+    }
+  
+  ...
+  
+  }
 
 // Game loop
 function gameLoop() {
@@ -368,11 +384,6 @@ function gameOver() {
 
     // Show game over screen
     gameOverScreen.style.display = "flex";
-
-    if (gameOver) {
-        backgroundSound.pause();
-        gameOverSound.play();
-    }
 }
 
 // Restart game
@@ -427,6 +438,23 @@ function restartGame() {
     // Clear player element
     if (playerElement) {
         playerElement.innerHTML = "";
+    }
+}
+
+class sound {
+    constructor(src) {
+        this.sound = document.createElement("audio");
+        this.sound.src = src;
+        this.sound.setAttribute("preload", "auto");
+        this.sound.setAttribute("controls", "none");
+        this.sound.style.display = "none";
+        document.body.appendChild(this.sound);
+        this.play = function () {
+            this.sound.play();
+        };
+        this.stop = function () {
+            this.sound.pause();
+        };
     }
 }
 

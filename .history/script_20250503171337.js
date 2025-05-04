@@ -13,10 +13,11 @@ let gameWidth;
 let speedMultiplier = 1; // Added speed multiplier
 let spawnIntervalMultiplier = 1; // Added spawn interval multiplier
 const BASE_SPAWN_INTERVAL = 1500; // Base spawn interval in milliseconds
-let backgroundSound = new Audio("./audio/background.wav");
-backgroundSound.loop = true;
-let gameOverSound = new Audio("./audio/gameover.wav");
-let gameStartSound = new Audio("./audio/start.wav");
+
+// Audio elements
+const bgMusic = document.getElementById("bg-music");
+const startSound = document.getElementById("start-sound");
+const gameoverSound = document.getElementById("gameover-sound");
 
 // Character image mapping - using the exact filenames from the img folder
 const characterImages = {
@@ -91,10 +92,8 @@ function init() {
         instructionsContainer.style.display = "none"; // Hide instructions
         instructionsContainer.style.visibility = "hidden";
         instructionsContainer.style.zIndex = -1;
-
         // Show game screen after instructions
         gameScreen.style.display = "block";
-
         startGame(); // Start the game after closing instructions
     });
 
@@ -116,13 +115,17 @@ function init() {
 // Start the game
 function startGame() {
     console.log("Starting game with character:", selectedCharacter);
-    gameStartSound.play();
-    backgroundSound.play();
 
     if (!selectedCharacter) {
         console.error("No character selected!");
         return;
     }
+
+    // Play start sound and background music
+    startSound.currentTime = 0;
+    startSound.play();
+    bgMusic.currentTime = 0;
+    bgMusic.play();
 
     // Hide character selection screen
     characterSelectScreen.style.display = "none";
@@ -335,13 +338,13 @@ function updateScore() {
 // Toggle pause state
 function togglePause() {
     isPaused = !isPaused;
-
     if (isPaused) {
-        pauseScreen.style.display = "flex";
+        pauseScreen.style.display = "block";
+        bgMusic.pause();
         clearInterval(asteroidInterval);
     } else {
         pauseScreen.style.display = "none";
-        // Resume with current spawn interval
+        bgMusic.play();
         asteroidInterval = setInterval(
             spawnPlanet,
             BASE_SPAWN_INTERVAL * spawnIntervalMultiplier
@@ -351,11 +354,16 @@ function togglePause() {
 
 // Game over
 function gameOver() {
+    console.log("Game Over!");
     gameRunning = false;
-
-    // Clear intervals
     clearInterval(gameLoopInterval);
     clearInterval(asteroidInterval);
+
+    // Stop background music and play game over sound
+    bgMusic.pause();
+    bgMusic.currentTime = 0;
+    gameoverSound.currentTime = 0;
+    gameoverSound.play();
 
     // Remove all planets
     asteroids.forEach((planet) => {
@@ -368,15 +376,15 @@ function gameOver() {
 
     // Show game over screen
     gameOverScreen.style.display = "flex";
-
-    if (gameOver) {
-        backgroundSound.pause();
-        gameOverSound.play();
-    }
 }
 
 // Restart game
 function restartGame() {
+    // Reset audio
+    bgMusic.currentTime = 0;
+    gameoverSound.currentTime = 0;
+    startSound.currentTime = 0;
+
     // Clear intervals
     clearInterval(gameLoopInterval);
     clearInterval(asteroidInterval);

@@ -13,10 +13,6 @@ let gameWidth;
 let speedMultiplier = 1; // Added speed multiplier
 let spawnIntervalMultiplier = 1; // Added spawn interval multiplier
 const BASE_SPAWN_INTERVAL = 1500; // Base spawn interval in milliseconds
-let backgroundSound = new Audio("./audio/background.wav");
-backgroundSound.loop = true;
-let gameOverSound = new Audio("./audio/gameover.wav");
-let gameStartSound = new Audio("./audio/start.wav");
 
 // Character image mapping - using the exact filenames from the img folder
 const characterImages = {
@@ -49,6 +45,9 @@ const restartBtn = document.getElementById("restart-btn");
 const scoreDisplay = document.getElementById("score");
 const instructionsContainer = document.getElementById("instructions-container");
 const closeInstructionsBtn = document.getElementById("close-instructions");
+const bgMusic = document.getElementById("bg-music");
+const startMusic = document.getElementById("start-sound");
+const gameOverMusic = document.getElementById("game-over-sound");
 
 // Initialize the game
 function init() {
@@ -91,10 +90,8 @@ function init() {
         instructionsContainer.style.display = "none"; // Hide instructions
         instructionsContainer.style.visibility = "hidden";
         instructionsContainer.style.zIndex = -1;
-
         // Show game screen after instructions
         gameScreen.style.display = "block";
-
         startGame(); // Start the game after closing instructions
     });
 
@@ -116,8 +113,6 @@ function init() {
 // Start the game
 function startGame() {
     console.log("Starting game with character:", selectedCharacter);
-    gameStartSound.play();
-    backgroundSound.play();
 
     if (!selectedCharacter) {
         console.error("No character selected!");
@@ -174,6 +169,11 @@ function startGame() {
     asteroidInterval = setInterval(spawnPlanet, BASE_SPAWN_INTERVAL);
 
     console.log("Game started successfully");
+
+    // add background music and start sound
+    bgMusic.currentTime = 0;
+    bgMusic.volume = 5; // optional
+    bgMusic.play();
 }
 
 // Game loop
@@ -368,11 +368,6 @@ function gameOver() {
 
     // Show game over screen
     gameOverScreen.style.display = "flex";
-
-    if (gameOver) {
-        backgroundSound.pause();
-        gameOverSound.play();
-    }
 }
 
 // Restart game

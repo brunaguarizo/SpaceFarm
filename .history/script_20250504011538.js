@@ -13,10 +13,7 @@ let gameWidth;
 let speedMultiplier = 1; // Added speed multiplier
 let spawnIntervalMultiplier = 1; // Added spawn interval multiplier
 const BASE_SPAWN_INTERVAL = 1500; // Base spawn interval in milliseconds
-let backgroundSound = new Audio("./audio/background.wav");
-backgroundSound.loop = true;
-let gameOverSound = new Audio("./audio/gameover.wav");
-let gameStartSound = new Audio("./audio/start.wav");
+let backgroundSound = new Audio("./background.wav");
 
 // Character image mapping - using the exact filenames from the img folder
 const characterImages = {
@@ -91,10 +88,16 @@ function init() {
         instructionsContainer.style.display = "none"; // Hide instructions
         instructionsContainer.style.visibility = "hidden";
         instructionsContainer.style.zIndex = -1;
+        // Play background music
+        backgroundSound.play().catch((error) => {
+            console.error(
+                "Background music could not be played automatically:",
+                error
+            );
+        });
 
         // Show game screen after instructions
         gameScreen.style.display = "block";
-
         startGame(); // Start the game after closing instructions
     });
 
@@ -116,8 +119,6 @@ function init() {
 // Start the game
 function startGame() {
     console.log("Starting game with character:", selectedCharacter);
-    gameStartSound.play();
-    backgroundSound.play();
 
     if (!selectedCharacter) {
         console.error("No character selected!");
@@ -368,11 +369,6 @@ function gameOver() {
 
     // Show game over screen
     gameOverScreen.style.display = "flex";
-
-    if (gameOver) {
-        backgroundSound.pause();
-        gameOverSound.play();
-    }
 }
 
 // Restart game

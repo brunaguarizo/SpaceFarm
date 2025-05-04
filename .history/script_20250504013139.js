@@ -15,8 +15,6 @@ let spawnIntervalMultiplier = 1; // Added spawn interval multiplier
 const BASE_SPAWN_INTERVAL = 1500; // Base spawn interval in milliseconds
 let backgroundSound = new Audio("./audio/background.wav");
 backgroundSound.loop = true;
-let gameOverSound = new Audio("./audio/gameover.wav");
-let gameStartSound = new Audio("./audio/start.wav");
 
 // Character image mapping - using the exact filenames from the img folder
 const characterImages = {
@@ -116,7 +114,7 @@ function init() {
 // Start the game
 function startGame() {
     console.log("Starting game with character:", selectedCharacter);
-    gameStartSound.play();
+    // Play background music
     backgroundSound.play();
 
     if (!selectedCharacter) {
@@ -371,7 +369,6 @@ function gameOver() {
 
     if (gameOver) {
         backgroundSound.pause();
-        gameOverSound.play();
     }
 }
 
