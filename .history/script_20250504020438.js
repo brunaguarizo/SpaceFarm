@@ -299,7 +299,7 @@ function checkCollisions() {
     for (const planet of asteroids) {
         const planetRect = {
             x: planet.x, // Planet's left position
-            y: planet.y - 55, // Planet's top position (centered)
+            y: planet.y - 50, // Planet's top position (centered)
             width: 80, // Planet's width
             height: 80, // Planet's height
         };

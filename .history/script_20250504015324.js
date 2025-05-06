@@ -290,18 +290,18 @@ function checkCollisions() {
     const playerElement = document.getElementById("player");
     if (!playerElement) return;
     const playerRect = {
-        x: gameWidth * 0.1 + 25, // Player's left position
-        y: playerY - 20, // Player's top position (centered)
-        width: 50, // Player's width
-        height: 50, // Player's height
+        x: gameWidth * 0.1, // Player's left position
+        y: playerY - 50, // Player's top position (centered)
+        width: 100, // Player's width
+        height: 100, // Player's height
     };
 
     for (const planet of asteroids) {
         const planetRect = {
             x: planet.x, // Planet's left position
-            y: planet.y - 55, // Planet's top position (centered)
-            width: 80, // Planet's width
-            height: 80, // Planet's height
+            y: planet.y - 50, // Planet's top position (centered)
+            width: 100, // Planet's width
+            height: 100, // Planet's height
         };
 
         // Check if player and planet rectangles intersect

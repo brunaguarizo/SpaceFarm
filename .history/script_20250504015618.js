@@ -298,10 +298,10 @@ function checkCollisions() {
 
     for (const planet of asteroids) {
         const planetRect = {
-            x: planet.x, // Planet's left position
-            y: planet.y - 55, // Planet's top position (centered)
-            width: 80, // Planet's width
-            height: 80, // Planet's height
+            x: planet.x + 25, // Planet's left position
+            y: planet.y - 25, // Planet's top position (centered)
+            width: 50, // Planet's width
+            height: 50, // Planet's height
         };
 
         // Check if player and planet rectangles intersect

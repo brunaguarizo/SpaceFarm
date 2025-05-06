@@ -13,10 +13,7 @@ let gameWidth;
 let speedMultiplier = 1; // Added speed multiplier
 let spawnIntervalMultiplier = 1; // Added spawn interval multiplier
 const BASE_SPAWN_INTERVAL = 1500; // Base spawn interval in milliseconds
-let backgroundSound = new Audio("./audio/background.wav");
-backgroundSound.loop = true;
-let gameOverSound = new Audio("./audio/gameover.wav");
-let gameStartSound = new Audio("./audio/start.wav");
+let backgroundSound = new Audio("./background.wav");
 
 // Character image mapping - using the exact filenames from the img folder
 const characterImages = {
@@ -27,12 +24,12 @@ const characterImages = {
 
 // Planet image options - using the exact filenames from the img folder
 const planetImages = [
-    "./img/planet1.png",
-    "./img/planet2.png",
-    "./img/planet3.png",
-    "./img/planet4.png",
-    "./img/planet5.png",
-    "./img/planet6.png",
+    "img/planet1.png",
+    "img/planet2.png",
+    "img/planet3.png",
+    "img/planet4.png",
+    "img/planet5.png",
+    "img/planet6.png",
 ];
 
 // DOM elements
@@ -91,10 +88,8 @@ function init() {
         instructionsContainer.style.display = "none"; // Hide instructions
         instructionsContainer.style.visibility = "hidden";
         instructionsContainer.style.zIndex = -1;
-
         // Show game screen after instructions
         gameScreen.style.display = "block";
-
         startGame(); // Start the game after closing instructions
     });
 
@@ -116,8 +111,6 @@ function init() {
 // Start the game
 function startGame() {
     console.log("Starting game with character:", selectedCharacter);
-    gameStartSound.play();
-    backgroundSound.play();
 
     if (!selectedCharacter) {
         console.error("No character selected!");
@@ -287,21 +280,19 @@ function movePlanets() {
 
 // Check for collisions
 function checkCollisions() {
-    const playerElement = document.getElementById("player");
-    if (!playerElement) return;
     const playerRect = {
-        x: gameWidth * 0.1 + 25, // Player's left position
-        y: playerY - 20, // Player's top position (centered)
-        width: 50, // Player's width
-        height: 50, // Player's height
+        x: gameWidth * 0.2 + 30, // Reduced left offset for more overlap
+        y: playerY - 20, // Reduced top offset for more overlap
+        width: 80, // Reduced width for more accurate collision
+        height: 80, // Reduced height for more accurate collision
     };
 
     for (const planet of asteroids) {
         const planetRect = {
-            x: planet.x, // Planet's left position
-            y: planet.y - 55, // Planet's top position (centered)
-            width: 80, // Planet's width
-            height: 80, // Planet's height
+            x: planet.x + 10, // Added offset to allow more overlap
+            y: planet.y - 20, // Reduced top offset for more overlap
+            width: 40, // Reduced width for more accurate collision
+            height: 40, // Reduced height for more accurate collision
         };
 
         // Check if player and planet rectangles intersect
@@ -353,8 +344,6 @@ function togglePause() {
 
 // Game over
 function gameOver() {
-    if (!gameRunning) return; // Prevent multiple game over calls
-
     gameRunning = false;
 
     // Clear intervals
@@ -363,9 +352,7 @@ function gameOver() {
 
     // Remove all planets
     asteroids.forEach((planet) => {
-        if (planet.element && planet.element.parentNode) {
-            gameScreen.removeChild(planet.element);
-        }
+        gameScreen.removeChild(planet.element);
     });
     asteroids = [];
 
@@ -374,10 +361,6 @@ function gameOver() {
 
     // Show game over screen
     gameOverScreen.style.display = "flex";
-
-    // Stop background music and play game over sound
-    backgroundSound.pause();
-    gameOverSound.play();
 }
 
 // Restart game
